@@ -1,6 +1,6 @@
 {
     "name": "laravel-notification-channels/hubspot-engagement",
-    "description": ":package_description",
+    "description": "Channel to save email and notifications on Hubspot Engagement",
     "homepage": "https://github.com/laravel-notification-channels/hubspot-engagement",
     "license": "MIT",
     "authors": [
