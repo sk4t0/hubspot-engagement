@@ -1,7 +1,4 @@
-Please see [this repo](https://github.com/laravel-notification-channels/channels) for instructions on how to submit a
-channel proposal.
-
-# A Boilerplate repo for contributions
+# Hubspot Engagement Notifications Channel for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-notification-channels/hubspot-engagement.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/hubspot-engagement)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
