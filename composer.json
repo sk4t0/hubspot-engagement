@@ -5,14 +5,15 @@
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": ":author_website",
+            "name": "Alberto Peripolli",
+            "email": "info@albertoperipolli.com",
+            "homepage": "https://www.albertoperipolli.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": ">=7.2",
+        "hubspot/hubspot-php": "^3.0",
         "illuminate/notifications": "~6.0 || ~7.0 || ~8.0",
         "illuminate/support": "~6.0 || ~7.0 || ~8.0"
     },
@@ -22,12 +23,12 @@
     },
     "autoload": {
         "psr-4": {
-            "NotificationChannels\\:channel_namespace\\": "src"
+            "NotificationChannels\\HubspotEngagement\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "NotificationChannels\\:channel_namespace\\Test\\": "tests"
+            "NotificationChannels\\HubspotEngagement\\Test\\": "tests"
         }
     },
     "scripts": {
