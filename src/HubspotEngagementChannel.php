@@ -29,7 +29,29 @@ class HubspotEngagementChannel
     public function send($notifiable, Notification $notification): ?array
     {
         $message = $notification->toMail($notifiable);
-
+        $emailMetaData = [
+            "from"=> [
+                "email" => $message->from[0],
+                "firstName" => $message->from[1]
+            ],
+            "to" => [[
+                "email" => $notifiable->routeNotificationForMail($notification)
+            ]],
+            "cc" => [],
+            "bcc" => [],
+            "subject" =>  $message->subject,
+            "html" =>  $message->render()
+        ];
+        if(!empty($message->cc)){
+            foreach($message->cc as $cc){
+                $emailMetaData["cc"][] = ["email" => $cc[0]];
+            }
+        }
+        if(!empty($message->bcc)){
+            foreach($message->bcc as $bcc){
+                $emailMetaData["bcc"][] = ["email" => $bcc[0]];
+            }
+        }
         $this->hubspot->engagements()->create(
             [
                 "active" => true,
@@ -41,18 +63,7 @@ class HubspotEngagementChannel
                 "contactIds"=> [$notifiable->hubspot_contact_id ?? null],
             ],
             [],
-            [
-                "from"=> [
-                    "email" => $message->from[0],
-                    "firstName" => $message->from[1]
-                ],
-                "to" => [[
-                    "email" => $notifiable->routeNotificationForMail($notification)
-                ]],
-                "cc" => [ !empty($message->cc) ? [ "email" =>   $message->cc[0][0] ]: null],
-                "subject" =>  $message->subject,
-                "html" =>  $message->render(),
-            ]
+            $emailMetaData
         );
         //$response = [a call to the api of your notification send]
 
