@@ -76,7 +76,6 @@ class HubspotEngagementChannel
             throw CouldNotSendNotification::serviceRespondedWithAnError($e->getMessage());
             return null;
         }
-        dd($e);
         return $e;
     }
 }
