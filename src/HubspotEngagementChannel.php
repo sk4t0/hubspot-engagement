@@ -32,7 +32,7 @@ class HubspotEngagementChannel
         $this->hubspot->engagements()->create(
             [
                 "active" => true,
-                "ownerId" => $notifiable->owner_id ? $notifiable->owner->hubspot_owner_id : null,
+                "ownerId" => $notifiable->hubspot_owner_id ?? null,
                 "type" => "EMAIL",
                 "timestamp" => now()->timestamp
             ],
