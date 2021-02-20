@@ -1,7 +1,7 @@
 {
-    "name": "laravel-notification-channels/:package_name",
+    "name": "laravel-notification-channels/hubspot-engagement",
     "description": ":package_description",
-    "homepage": "https://github.com/laravel-notification-channels/:package_name",
+    "homepage": "https://github.com/laravel-notification-channels/hubspot-engagement",
     "license": "MIT",
     "authors": [
         {
