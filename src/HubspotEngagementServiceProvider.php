@@ -3,6 +3,7 @@
 namespace NotificationChannels\HubspotEngagement;
 
 use Illuminate\Support\ServiceProvider;
+use SevenShores\Hubspot\Factory as Hubspot;
 
 
 class HubspotEngagementServiceProvider extends ServiceProvider
@@ -21,7 +22,7 @@ class HubspotEngagementServiceProvider extends ServiceProvider
                     throw InvalidConfiguration::configurationNotSet();
                 }
 
-                return SevenShores\Hubspot\Factory::create(
+                return Hubspot::create(
                     $hubspotConfig['api_key'],
                     null,
                     $hubspotConfig['client_options'] ?? []

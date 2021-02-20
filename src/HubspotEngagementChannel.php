@@ -4,6 +4,7 @@ namespace NotificationChannels\HubspotEngagement;
 
 use NotificationChannels\HubspotEngagement\Exceptions\CouldNotSendNotification;
 use Illuminate\Notifications\Notification;
+use SevenShores\Hubspot\Factory as Hubspot;
 
 class HubspotEngagementChannel
 {
