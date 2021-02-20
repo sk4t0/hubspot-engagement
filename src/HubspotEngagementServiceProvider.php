@@ -14,7 +14,7 @@ class HubspotEngagementServiceProvider extends ServiceProvider
     {
         $this->app->when(HubspotEngagementChannel::class)
             ->needs(Hubspot::class)
-            ->give(function () {
+            ->give(static function () {
                 $hubspotConfig = config('services.hubspot');
 
                 if (is_null($hubspotConfig)) {
