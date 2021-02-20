@@ -1,4 +1,5 @@
-Please see [this repo](https://github.com/laravel-notification-channels/channels) for instructions on how to submit a channel proposal.
+Please see [this repo](https://github.com/laravel-notification-channels/channels) for instructions on how to submit a
+channel proposal.
 
 # A Boilerplate repo for contributions
 
@@ -11,18 +12,16 @@ Please see [this repo](https://github.com/laravel-notification-channels/channels
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/hubspot-engagement/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/hubspot-engagement/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/hubspot-engagement.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/hubspot-engagement)
 
-This package makes it easy to send notifications using [HubspotEngagement](link to service) with Laravel 5.5+, 6.x and 7.x
-
-This is where your description should go. Add a little code example so build can understand real quick how the package can be used. Try and limit it to a paragraph or two.
-
-
+This package makes it easy to log notifications
+to [Hubspot Engagement](https://legacydocs.hubspot.com/docs/methods/engagements/engagements-overview) with Laravel 5.5+,
+6.x, 7.x and 8.x
 
 ## Contents
 
 - [Installation](#installation)
-	- [Setting up the HubspotEngagement service](#setting-up-the-HubspotEngagement-service)
+    - [Setting up the HubspotEngagement service](#setting-up-the-hubspotengagement-service)
 - [Usage](#usage)
-	- [Available Message methods](#available-message-methods)
+    - [Supported Engagement types](#supported-engagement-types)
 - [Changelog](#changelog)
 - [Testing](#testing)
 - [Security](#security)
@@ -30,22 +29,102 @@ This is where your description should go. Add a little code example so build can
 - [Credits](#credits)
 - [License](#license)
 
-
 ## Installation
 
-Please also include the steps for any third-party service setup that's required for this package.
+You can install the package via composer:
+
+```bash
+composer require laravel-notification-channels/hubspot-engagement
+```
 
 ### Setting up the HubspotEngagement service
 
-Optionally include a few steps how users can set up the service.
+Generate API Key from [Hubspot](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key).
+
+Then, configure your Hubspot API Key and/or Guzzle options:
+
+```php
+// config/services.php
+'hubspot' => [
+    'api_key' => env('HUBSPOT_API_KEY'),
+    'client_options' => [
+        'http_errors' => true,
+    ]
+],
+```
+
+By setting http_errors to false, you will not receive any exceptions at all, but pure responses. For possible options,
+see  [here](https://docs.guzzlephp.org/en/latest/request-options.html).
 
 ## Usage
 
-Some code examples, make it clear how to use the package
+You can now use the channel in your `via()` method inside the Notification class.
 
-### Available Message methods
+### Supported Engagement types
 
-A list of all available options
+Currently is only supported **Email** type of Engagement. 
+
+#### Email type
+Your Notification class must have toMail method.
+The package accepts: MailMessage lines notifications, MailMessage view notifications and Markdown mail notifications.
+
+Data stored on Hubspot:
+- Hubspot Owner Id => The Notifiable Model must have **hubspot_owner_id** field or accessor
+- Hubspot Contact Id => The Notifiable Model must have **hubspot_contact_id** field or accessor
+- Send at timestamp 
+- from email
+- from name
+- subject
+- html body
+- to email
+- cc emails
+- bcc emails
+
+### Example
+
+#### Notification example
+```php
+use NotificationChannels\HubspotEngagement\HubspotEngagementChannel;
+use Illuminate\Notifications\Notification;
+
+class OrderConfirmation extends Notification
+{
+    ...
+    public function via($notifiable)
+    {
+        return ['mail', HubspotEngagementChannel::class]];
+    }
+
+    public function toMail($notifiable)
+    {
+        $message = (new MailMessage)
+            ->subject(__('order.order_confirm', ['code' => $this->order->code]));
+
+        return $message->view(
+            'emails.order', [
+                'title' => __('order.order_confirm', ['code' => $this->order->code]),
+                'order' => $this->order
+            ]
+        );
+    }
+    ...
+}
+```
+
+#### Model example
+```php
+namespace App\Models;
+
+class User extends Authenticatable{
+    ...
+    protected $fillable = [... ,'hubspot_contact_id', 'hubspot_owner_id', ...];
+     
+    public function getHubspotOwnerIdAttribute($value){
+        return $value ?: ($this->owner_id ? $this->owner->hubspot_owner_id : null) ;
+    }
+    ...
+}
+```
 
 ## Changelog
 
@@ -67,7 +146,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Credits
 
-- [Alberto Peripolli](https://github.com/:author_username)
+- [Alberto Peripolli](https://github.com/trippo)
 - [All Contributors](../../contributors)
 
 ## License
