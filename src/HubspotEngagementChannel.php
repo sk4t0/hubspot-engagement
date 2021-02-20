@@ -41,7 +41,7 @@ class HubspotEngagementChannel
             "cc" => [],
             "bcc" => [],
             "subject" => $message->subject,
-            "html" => "prova"//$message->render()
+            "html" => $message->render()
         ];
         if (!empty($message->cc)) {
             foreach ($message->cc as $cc) {
