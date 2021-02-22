@@ -2,9 +2,10 @@
 
 namespace NotificationChannels\HubspotEngagement\Test;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notification;
 
-class Notifiable
+class TestNotifiable extends Model
 {
     use \Illuminate\Notifications\Notifiable;
 

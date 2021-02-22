@@ -9,7 +9,7 @@ use GuzzleHttp\Psr7\Response;
 use SevenShores\Hubspot\Factory as Hubspot;
 use NotificationChannels\HubspotEngagement\HubspotEngagementChannel;
 
-class ChannelTest extends TestCase
+class ChannelUnitTest extends TestCase
 {
     /** @var Mockery\Mock */
     protected $hubspot;
@@ -37,7 +37,7 @@ class ChannelTest extends TestCase
     {
         $response = new Response(200);
 
-        $this->hubspot->shouldReceive('create')
+        $this->hubspot->shouldReceive('engagements')
             ->once()
             ->with([
                 'engagement' => [
@@ -70,7 +70,7 @@ class ChannelTest extends TestCase
             ])
             ->andReturn($response);
 
-        $channel_response = $this->channel->send(new Notifiable(), new TestLineMailNotification());
+        $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
 
         $this->assertInstanceOf(ResponseInterface::class, $channel_response);
     }
