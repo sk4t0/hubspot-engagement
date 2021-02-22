@@ -42,12 +42,14 @@ Then, configure your Hubspot API Key and/or Guzzle options:
 
 ```php
 // config/services.php
+...
 'hubspot' => [
     'api_key' => env('HUBSPOT_API_KEY'),
     'client_options' => [
         'http_errors' => true,
     ]
 ],
+...
 ```
 
 By setting http_errors to false, you will not receive any exceptions at all, but pure responses. For possible options,

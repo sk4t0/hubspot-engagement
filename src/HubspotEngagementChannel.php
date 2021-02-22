@@ -14,9 +14,21 @@ class HubspotEngagementChannel
      */
     protected $hubspot;
 
-    public function __construct(Hubspot $hubspot)
+    protected $mail_config;
+
+    /**
+     * HubspotEngagementChannel constructor.
+     * @param Hubspot $hubspot
+     * @param array|null $mail_config
+     */
+    public function __construct(Hubspot $hubspot, Array $mail_config = null)
     {
         $this->hubspot = $hubspot;
+        if($mail_config){
+            $this->mail_config = $mail_config;
+        }else{
+            $this->mail_config = config('mail.from');
+        }
     }
 
     /**
@@ -32,8 +44,8 @@ class HubspotEngagementChannel
         $message = $notification->toMail($notifiable);
         $emailMetaData = [
             "from" => [
-                "email" => $message->from ? $message->from[0] : config('mail.from.address'),
-                "firstName" => $message->from ? $message->from[1] : config('mail.from.name')
+                "email" => $message->from ? $message->from[0] : $this->mail_config['address'],
+                "firstName" => $message->from ? $message->from[1] : $this->mail_config['name']
             ],
             "to" => [[
                 "email" => $notifiable->routeNotificationForMail($notification)
