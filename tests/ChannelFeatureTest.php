@@ -87,7 +87,6 @@ class ChannelFeatureTest extends TestCase
         (new TestNotifiable())->notify(new TestLineMailNotification());
     }
 
-
     /** @test */
     public function it_throws_an_exception_when_it_could_not_send_the_notification()
     {

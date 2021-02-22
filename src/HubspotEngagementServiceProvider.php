@@ -23,11 +23,7 @@ class HubspotEngagementServiceProvider extends ServiceProvider
                     throw InvalidConfiguration::configurationNotSet();
                 }
 
-                return Hubspot::create(
-                    $hubspotConfig['api_key'],
-                    null,
-                    $hubspotConfig['client_options'] ?? []
-                );
+                return Hubspot::create($hubspotConfig['api_key'], null,$hubspotConfig['client_options'] ?? []);
             });
 
     }
