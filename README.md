@@ -5,9 +5,9 @@
 [![Build Status](https://img.shields.io/travis/laravel-notification-channels/hubspot-engagement/master.svg?style=flat-square)](https://travis-ci.org/laravel-notification-channels/hubspot-engagement)
 [![StyleCI](https://styleci.io/repos/:style_ci_id/shield)](https://styleci.io/repos/:style_ci_id)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/:sensio_labs_id.svg?style=flat-square)](https://insight.sensiolabs.com/projects/:sensio_labs_id)
-[![Quality Score](https://img.shields.io/scrutinizer/g/laravel-notification-channels/hubspot-engagement.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/hubspot-engagement)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/hubspot-engagement/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/hubspot-engagement/?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/hubspot-engagement.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/hubspot-engagement)
+[![Quality Score](https://img.shields.io/scrutinizer/g/trippo/hubspot-engagement.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/hubspot-engagement)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/trippo/hubspot-engagement/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/trippo/hubspot-engagement/?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/trippo/hubspot-engagement.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/hubspot-engagement)
 
 This package makes it easy to log notifications
 to [Hubspot Engagement](https://legacydocs.hubspot.com/docs/methods/engagements/engagements-overview) with Laravel 5.5+,
