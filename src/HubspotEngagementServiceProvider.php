@@ -3,6 +3,7 @@
 namespace NotificationChannels\HubspotEngagement;
 
 use Illuminate\Support\ServiceProvider;
+use NotificationChannels\HubspotEngagement\Exceptions\InvalidConfiguration;
 use SevenShores\Hubspot\Factory as Hubspot;
 
 

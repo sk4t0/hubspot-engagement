@@ -3,11 +3,12 @@
 
 namespace NotificationChannels\HubspotEngagement\Test;
 
+
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\HubspotEngagement\HubspotEngagementChannel;
 
-class TestLineMailNotification extends Notification
+class TestViewMailNotification extends Notification
 {
     public function via($notifiable)
     {
@@ -18,8 +19,9 @@ class TestLineMailNotification extends Notification
     {
         return (new MailMessage)
             ->subject('Subject')
-            ->greeting('Greeting')
-            ->line('Line')
-            ->action('button','https://www.google.it');
+            ->from('from3@email.com','From3')
+            ->view('email_test_view',[])
+            ->cc('cc@email.com','cc_name')
+            ->bcc('bcc@email.com','bcc_name');
     }
 }

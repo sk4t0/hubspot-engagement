@@ -14,7 +14,7 @@ class TestNotifiable extends Model
      */
     public function routeNotificationForMail(Notification $notification)
     {
-        return 'email@email.it';
+        return 'email@email.com';
     }
 
     public function getHubspotOwnerIdAttribute($value){

@@ -19,16 +19,10 @@ class HubspotEngagementChannel
     /**
      * HubspotEngagementChannel constructor.
      * @param Hubspot $hubspot
-     * @param array|null $mail_config
      */
-    public function __construct(Hubspot $hubspot, Array $mail_config = null)
+    public function __construct(Hubspot $hubspot)
     {
         $this->hubspot = $hubspot;
-        if($mail_config){
-            $this->mail_config = $mail_config;
-        }else{
-            $this->mail_config = config('mail.from');
-        }
     }
 
     /**
@@ -44,8 +38,8 @@ class HubspotEngagementChannel
         $message = $notification->toMail($notifiable);
         $emailMetaData = [
             "from" => [
-                "email" => $message->from ? $message->from[0] : $this->mail_config['address'],
-                "firstName" => $message->from ? $message->from[1] : $this->mail_config['name']
+                "email" => $message->from ? $message->from[0] : config('mail.from.address'),
+                "firstName" => $message->from ? $message->from[1] : config('mail.from.name')
             ],
             "to" => [[
                 "email" => $notifiable->routeNotificationForMail($notification)
@@ -57,12 +51,20 @@ class HubspotEngagementChannel
         ];
         if (!empty($message->cc)) {
             foreach ($message->cc as $cc) {
-                $emailMetaData["cc"][] = ["email" => $cc[0]];
+                $emailArray = ["email" => $cc[0]];
+                if(!empty($cc[1])){
+                    $emailArray['firstName'] = $cc[1];
+                }
+                $emailMetaData["cc"][] = $emailArray;
             }
         }
         if (!empty($message->bcc)) {
             foreach ($message->bcc as $bcc) {
-                $emailMetaData["bcc"][] = ["email" => $bcc[0]];
+                $emailArray = ["email" => $bcc[0]];
+                if(!empty($bcc[1])){
+                    $emailArray['firstName'] = $bcc[1];
+                }
+                $emailMetaData["bcc"][] = $emailArray;
             }
         }
 
@@ -86,7 +88,6 @@ class HubspotEngagementChannel
             );
         } catch (BadRequest $e) {
             throw CouldNotSendNotification::serviceRespondedWithAnError($e->getMessage());
-            return null;
         }
         return $e;
     }
