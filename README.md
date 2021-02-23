@@ -4,7 +4,6 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://scrutinizer-ci.com/g/trippo/hubspot-engagement/badges/build.png?b=master)](https://scrutinizer-ci.com/g/trippo/hubspot-engagement/build-status/master)
 [![StyleCI](https://github.styleci.io/repos/339465312/shield?branch=master)](https://github.styleci.io/repos/339465312?branch=master)
-[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/:sensio_labs_id.svg?style=flat-square)](https://insight.sensiolabs.com/projects/:sensio_labs_id)
 [![Quality Score](https://img.shields.io/scrutinizer/g/trippo/hubspot-engagement.svg?style=flat-square)](https://scrutinizer-ci.com/g/trippo/hubspot-engagement)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/trippo/hubspot-engagement/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/trippo/hubspot-engagement/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/trippo/hubspot-engagement.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/hubspot-engagement)
