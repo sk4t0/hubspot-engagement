@@ -2,10 +2,10 @@
 
 namespace NotificationChannels\HubspotEngagement;
 
-use Illuminate\Notifications\Notification;
 use NotificationChannels\HubspotEngagement\Exceptions\CouldNotSendNotification;
-use SevenShores\Hubspot\Exceptions\BadRequest;
+use Illuminate\Notifications\Notification;
 use SevenShores\Hubspot\Factory as Hubspot;
+use SevenShores\Hubspot\Exceptions\BadRequest;
 
 class HubspotEngagementChannel
 {
@@ -35,61 +35,71 @@ class HubspotEngagementChannel
      */
     public function send($notifiable, Notification $notification): ?array
     {
-        $message = $notification->toMail($notifiable);
-        $emailMetaData = [
-            'from' => [
-                'email' => $message->from ? $message->from[0] : config('mail.from.address'),
-                'firstName' => $message->from ? $message->from[1] : config('mail.from.name'),
-            ],
-            'to' => [[
-                'email' => $notifiable->routeNotificationForMail($notification),
-            ]],
-            'cc' => [],
-            'bcc' => [],
-            'subject' => $message->subject,
-            'html' => $message->render(),
+        $hubspotContactId = $notifiable->getHubspotContactId();
+        if (empty($hubspotContactId)) {
+            return null;
+        }
+
+        $engagementArray = [
+            "active" => true,
+            "type" => "EMAIL",
+            "timestamp" => now()->getPreciseTimestamp(3)
         ];
-        if (! empty($message->cc)) {
+        if ($notifiable->getHubspotOwnerId()) {
+            $engagementArray["ownerId"] = $notifiable->getHubspotOwnerId();
+        }
+
+        $associationsArray = [
+            "contactIds" => [$hubspotContactId],
+            "companyIds" => [],
+            "dealIds" => [],
+            "ownerIds" => [],
+            "ticketIds" => []
+        ];
+
+        $message = $notification->toMail($notifiable);
+        $metadataArray = [
+            "from" => [
+                "email" => $message->from ? $message->from[0] : config('mail.from.address')
+            ],
+            "to" => [[
+                "email" => $notifiable->routeNotificationForMail($notification)
+            ]],
+            "cc" => [],
+            "bcc" => [],
+            "subject" => $message->subject,
+            "html" => $message->render()
+        ];
+
+        $fromName = $message->from ? $message->from[1] : config('mail.from.name');
+        if($fromName){
+            $metadataArray['from']['firstName'] = $fromName;
+        }
+
+        if (!empty($message->cc)) {
             foreach ($message->cc as $cc) {
-                $emailArray = ['email' => $cc[0]];
-                if (! empty($cc[1])) {
+                $emailArray = ["email" => $cc[0]];
+                if (!empty($cc[1])) {
                     $emailArray['firstName'] = $cc[1];
                 }
-                $emailMetaData['cc'][] = $emailArray;
+                $metadataArray["cc"][] = $emailArray;
             }
         }
-        if (! empty($message->bcc)) {
+        if (!empty($message->bcc)) {
             foreach ($message->bcc as $bcc) {
-                $emailArray = ['email' => $bcc[0]];
-                if (! empty($bcc[1])) {
+                $emailArray = ["email" => $bcc[0]];
+                if (!empty($bcc[1])) {
                     $emailArray['firstName'] = $bcc[1];
                 }
-                $emailMetaData['bcc'][] = $emailArray;
+                $metadataArray["bcc"][] = $emailArray;
             }
         }
 
         try {
-            $e = $this->hubspot->engagements()->create(
-                [
-                    'active' => true,
-                    'ownerId' => $notifiable->hubspot_owner_id ?? null,
-                    'type' => 'EMAIL',
-                    'timestamp' => now()->getPreciseTimestamp(3),
-                ],
-                [
-                    'contactIds' => $notifiable->hubspot_contact_id ? [$notifiable->hubspot_contact_id] : [],
-                    'companyIds' => [],
-                    'dealIds' => [],
-                    'ownerIds' => [],
-                    'ticketIds' => [],
-                ],
-                $emailMetaData,
-                []
-            );
+            $e = $this->hubspot->engagements()->create($engagementArray, $associationsArray, $metadataArray);
         } catch (BadRequest $e) {
             throw CouldNotSendNotification::serviceRespondedWithAnError($e->getMessage());
         }
-
         return $e;
     }
 }

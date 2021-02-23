@@ -4,7 +4,7 @@ namespace NotificationChannels\HubspotEngagement\Test;
 
 use Illuminate\Notifications\Notification;
 
-class TestNotifiable
+class TestNotifiableWithoutOwnerId
 {
     use \Illuminate\Notifications\Notifiable;
 
@@ -17,7 +17,7 @@ class TestNotifiable
     }
 
     public function getHubspotOwnerId(){
-        return 123456789 ;
+        return null ;
     }
 
     public function getHubspotContactId(){

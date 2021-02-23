@@ -13,6 +13,10 @@ class HubspotEngagementServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if ($this->app->runningUnitTests()) {
+            $this->loadViewsFrom(__DIR__ . '/../resources/views', 'hubspot-engagement');
+        }
+
         $this->app->when(HubspotEngagementChannel::class)
             ->needs(Hubspot::class)
             ->give(static function () {

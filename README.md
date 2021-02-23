@@ -68,8 +68,8 @@ Your Notification class must have toMail method.
 The package accepts: MailMessage lines notifications, MailMessage view notifications and Markdown mail notifications.
 
 Data stored on Hubspot:
-- Hubspot Owner Id => The Notifiable Model must have **hubspot_owner_id** field or accessor
-- Hubspot Contact Id => The Notifiable Model must have **hubspot_contact_id** field or accessor
+- Hubspot Owner Id => The Notifiable Model must have **getHubspotOwnerId()** function
+- Hubspot Contact Id => The Notifiable Model must have **getHubspotContactId()** function
 - Send at timestamp 
 - from email
 - from name
@@ -116,10 +116,13 @@ namespace App\Models;
 
 class User extends Authenticatable{
     ...
-    protected $fillable = [... ,'hubspot_contact_id', 'hubspot_owner_id', ...];
      
-    public function getHubspotOwnerIdAttribute($value){
-        return $value ?: ($this->owner_id ? $this->owner->hubspot_owner_id : null) ;
+    public function getHubspotOwnerId(){
+        return $this->owner->hubspot_owner_id ?: ($this->owner_id ? $this->owner->hubspot_owner_id : null);
+    }
+
+    public function getHubspotContactId(){
+        return $this->hubspot_contact_id;
     }
     ...
 }

@@ -49,7 +49,7 @@ class ChannelFeatureTest extends TestCase
     private function testViewSetting()
     {
         $this->app->bind('view.finder', function ($app) {
-            $paths = [getcwd().'/'.('tests/resources/views')];
+            $paths = [getcwd() . '/' . ('tests/resources/views')];
 
             return new FileViewFinder($app['files'], $paths);
         });
@@ -57,18 +57,17 @@ class ChannelFeatureTest extends TestCase
 
     private function mockHubspot($client)
     {
-        $this->hubspot->shouldReceive('engagements')->once()->andReturn(new Engagements($client));
+        $this->hubspot->shouldReceive('engagements')->andReturn(new Engagements($client));
     }
 
     private function mockHubspotRequest()
     {
         $this->configSetUp();
         $client = Mockery::mock(Client::class);
-        $client->shouldReceive('request')->once()->andReturnUsing(function ($type, $endpoint, $json) {
+        $client->shouldReceive('request')->andReturnUsing(function ($type, $endpoint, $json) {
             return $json['json'];
         });
         $this->mockHubspot($client);
-        $this->testViewSetting();
     }
 
     private function mockHubspotFailedResponse()
@@ -97,12 +96,20 @@ class ChannelFeatureTest extends TestCase
     }
 
     /** @test */
-    public function it_can_send_a_notification_with_line_email_and_empty_cc_bcc()
+    public function it_not_send_a_notification_to_notifiable_without_contact_id()
+    {
+        $this->mockHubspotRequest();
+
+        $channel_response = $this->channel->send(new TestNotifiableWithoutContactId(), new TestLineMailNotification());
+        $this->assertNull($channel_response);
+    }
+
+    /** @test */
+    public function it_send_a_notification_to_notifiable_with_contact_id()
     {
         $this->mockHubspotRequest();
 
         $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
-        $this->assertIsArray($channel_response);
         $this->assertEquals($channel_response['engagement'], [
             'active' => true,
             'ownerId' => 123456789,
@@ -116,50 +123,132 @@ class ChannelFeatureTest extends TestCase
             'ownerIds' => [],
             'ticketIds' => [],
         ]);
-        $this->assertInstanceOf(\Illuminate\Support\HtmlString::class, $channel_response['metadata']['html']);
-        $htmlString = (string) $channel_response['metadata']['html'];
-        $this->assertStringContainsString('Greeting', $htmlString);
-        $this->assertStringContainsString('Line', $htmlString);
-        $this->assertStringContainsString('button', $htmlString);
-        $this->assertStringContainsString('https://www.google.it', $htmlString);
-        $channel_response['metadata']['html'] = '';
-        $this->assertEquals($channel_response['metadata'], [
-            'from' => [
-                'email' => 'from@email.com',
-                'firstName' => 'from_name',
-            ],
-            'to' => [[
-                'email' => 'email@email.com',
-            ]],
-            'cc' => [],
-            'bcc' => [],
-            'subject' => 'Subject',
-            'html' => '',
+    }
+
+    /** @test */
+    public function it_can_send_a_notification_to_notifiable_without_owner_id()
+    {
+        $this->mockHubspotRequest();
+
+        $channel_response = $this->channel->send(new TestNotifiableWithoutOwnerId(), new TestLineMailNotification());
+        $this->assertIsArray($channel_response);
+        $this->assertEquals($channel_response['engagement'], [
+            'active' => true,
+            'type' => 'EMAIL',
+            'timestamp' => $channel_response['engagement']['timestamp'],
         ]);
     }
 
     /** @test */
-    public function it_can_send_a_notification_with_view_email_and_only_one_cc_bcc_and_different_from()
+    public function it_can_send_a_notification_from_default_address()
     {
         $this->mockHubspotRequest();
+
+        $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
+        $this->assertEquals($channel_response['metadata']['from'], [
+            'email' => 'from@email.com',
+            'firstName' => 'from_name',
+        ]);
+    }
+
+    /** @test */
+    public function it_can_send_a_notification_from_custom_address_without_name()
+    {
+        $this->mockHubspotRequest();
+
+        $channel_response = $this->channel->send(new TestNotifiable(), new TestMarkdownMailNotification());
+        $this->assertEquals($channel_response['metadata']['from'], [
+            'email' => 'from2@email.com',
+        ]);
+    }
+
+    /** @test */
+    public function it_can_send_a_notification_from_custom_address_with_name()
+    {
+        $this->mockHubspotRequest();
+
+        $channel_response = $this->channel->send(new TestNotifiable(), new TestViewMailNotification());
+        $this->assertEquals($channel_response['metadata']['from'], [
+            'email' => 'from3@email.com',
+            'firstName' => 'From3',
+        ]);
+    }
+
+    /** @test */
+    public function it_can_send_a_notification_to_correct_email()
+    {
+        $this->mockHubspotRequest();
+
+        $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
+        $this->assertEquals($channel_response['metadata']['to'], [[
+                'email' => 'email@email.com',
+            ]]);
+
+    }
+
+    /** @test */
+    public function it_can_send_a_notification_with_empty_cc_bcc()
+    {
+        $this->mockHubspotRequest();
+
+        $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
+        $this->assertEquals($channel_response['metadata']['cc'], []);
+        $this->assertEquals($channel_response['metadata']['bcc'], []);
+    }
+
+    /** @test */
+    public function it_can_send_a_notification_with_one_cc_bcc()
+    {
+        $this->mockHubspotRequest();
+
+        $channel_response = $this->channel->send(new TestNotifiable(), new TestViewMailNotification());
+
+        $this->assertEquals($channel_response['metadata']['cc'], [['email' => 'cc@email.com', 'firstName' => 'cc_name']]);
+        $this->assertEquals($channel_response['metadata']['bcc'], [['email' => 'bcc@email.com', 'firstName' => 'bcc_name']]);
+    }
+    /** @test */
+    public function it_can_send_a_notification_with_multiple_cc_bcc()
+    {
+        $this->mockHubspotRequest();
+
+        $channel_response = $this->channel->send(new TestNotifiable(), new TestMarkdownMailNotification());
+
+        $this->assertEquals($channel_response['metadata']['cc'], [
+            ['email' => 'cc@email.com', 'firstName' => 'cc_name'],
+            ['email' => 'cc2@email.com'],
+        ]);
+        $this->assertEquals($channel_response['metadata']['bcc'], [
+            ['email' => 'bcc@email.com'],
+            ['email' => 'bcc2@email.com', 'firstName' => 'bcc2_name'],
+        ]);
+    }
+
+    /** @test */
+    public function it_can_send_a_notification_with_line_email()
+    {
+        $this->mockHubspotRequest();
+
+        $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
+        $this->assertIsArray($channel_response);
+        $this->assertInstanceOf(\Illuminate\Support\HtmlString::class, $channel_response['metadata']['html']);
+        $htmlString = (string)$channel_response['metadata']['html'];
+        $this->assertStringContainsString('Greeting', $htmlString);
+        $this->assertStringContainsString('Line', $htmlString);
+        $this->assertStringContainsString('button', $htmlString);
+        $this->assertStringContainsString('https://www.google.it', $htmlString);
+        $this->assertEquals($channel_response['metadata']['subject'], 'Subject');
+    }
+
+    /** @test */
+    public function it_can_send_a_notification_with_view_email()
+    {
+        $this->mockHubspotRequest();
+
         $channel_response = $this->channel->send(new TestNotifiable(), new TestViewMailNotification());
 
         $this->assertIsArray($channel_response);
         $this->assertIsString($channel_response['metadata']['html']);
-        $this->assertEquals($channel_response['metadata'], [
-            'from' => [
-                'email' => 'from3@email.com',
-                'firstName' => 'From3',
-            ],
-            'to' => [[
-                'email' => 'email@email.com',
-            ]],
-            'cc' => [['email' => 'cc@email.com', 'firstName' => 'cc_name']],
-            'bcc' => [['email' => 'bcc@email.com', 'firstName' => 'bcc_name']],
-            'subject' => 'Subject',
-            'html' => 'Test View Content
-',
-        ]);
+        $this->assertEquals($channel_response['metadata']['subject'], 'Subject');
         $this->assertStringContainsString('Test View Content', $channel_response['metadata']['html']);
     }
 
@@ -171,29 +260,8 @@ class ChannelFeatureTest extends TestCase
 
         $this->assertIsArray($channel_response);
         $this->assertInstanceOf(\Illuminate\Support\HtmlString::class, $channel_response['metadata']['html']);
-        $htmlString = (string) $channel_response['metadata']['html'];
+        $htmlString = (string)$channel_response['metadata']['html'];
         $this->assertStringContainsString('Markdown Title Content', $htmlString);
         $this->assertStringContainsString('Markdown body content', $htmlString);
-        $channel_response['metadata']['html'] = '';
-        $this->assertIsString($channel_response['metadata']['html']);
-        $this->assertEquals($channel_response['metadata'], [
-            'from' => [
-                'email' => 'from2@email.com',
-                'firstName' => null,
-            ],
-            'to' => [[
-                'email' => 'email@email.com',
-            ]],
-            'cc' => [
-                ['email' => 'cc@email.com', 'firstName' => 'cc_name'],
-                ['email' => 'cc2@email.com'],
-            ],
-            'bcc' => [
-                ['email' => 'bcc@email.com'],
-                ['email' => 'bcc2@email.com', 'firstName' => 'bcc2_name'],
-            ],
-            'subject' => 'Subject',
-            'html' => '',
-        ]);
     }
 }
