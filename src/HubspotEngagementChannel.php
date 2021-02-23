@@ -58,7 +58,7 @@ class HubspotEngagementChannel
         ];
 
         $message = $notification->toMail($notifiable);
-        $metadataArray = $this->getMetadataFromMessage($message,$notifiable->routeNotificationForMail($notification));
+        $metadataArray = $this->getMetadataFromMessage($message, $notifiable->routeNotificationForMail($notification));
 
         try {
             $e = $this->hubspot->engagements()->create($engagementArray, $associationsArray, $metadataArray);
@@ -69,17 +69,20 @@ class HubspotEngagementChannel
         return $e;
     }
 
-    private function parseEmailAddresses($emailAdresses){
-        return collect($emailAdresses)->map(function($address){
+    private function parseEmailAddresses($emailAdresses)
+    {
+        return collect($emailAdresses)->map(function ($address) {
             $emailArray = ['email' => $address[0]];
             if (! empty($address[1])) {
                 $emailArray['firstName'] = $address[1];
             }
+
             return $emailArray;
         })->toArray();
     }
 
-    private function getMetadataFromMessage($message,$to){
+    private function getMetadataFromMessage($message, $to)
+    {
         $metadataArray = [
             'from' => [
                 'email' => $message->from ? $message->from[0] : config('mail.from.address'),
@@ -97,6 +100,7 @@ class HubspotEngagementChannel
         if ($fromName) {
             $metadataArray['from']['firstName'] = $fromName;
         }
+
         return $metadataArray;
     }
 }
