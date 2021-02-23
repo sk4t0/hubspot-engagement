@@ -221,8 +221,7 @@ class ChannelFeatureTest extends TestCase
 
         $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
         $this->assertIsArray($channel_response);
-        $this->assertInstanceOf(\Illuminate\Support\HtmlString::class, $channel_response['metadata']['html']);
-        $htmlString = (string) $channel_response['metadata']['html'];
+        $htmlString = $channel_response['metadata']['html'];
         $this->assertStringContainsString('Greeting', $htmlString);
         $this->assertStringContainsString('Line', $htmlString);
         $this->assertStringContainsString('button', $htmlString);
@@ -250,7 +249,6 @@ class ChannelFeatureTest extends TestCase
         $channel_response = $this->channel->send(new TestNotifiable(), new TestMarkdownMailNotification());
 
         $this->assertIsArray($channel_response);
-        $this->assertInstanceOf(\Illuminate\Support\HtmlString::class, $channel_response['metadata']['html']);
         $htmlString = (string) $channel_response['metadata']['html'];
         $this->assertStringContainsString('Markdown Title Content', $htmlString);
         $this->assertStringContainsString('Markdown body content', $htmlString);
