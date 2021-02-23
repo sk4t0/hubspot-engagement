@@ -16,11 +16,13 @@ class TestNotifiableWithoutOwnerId
         return 'email@email.com';
     }
 
-    public function getHubspotOwnerId(){
-        return null ;
+    public function getHubspotOwnerId()
+    {
+        return null;
     }
 
-    public function getHubspotContactId(){
-        return 987654321 ;
+    public function getHubspotContactId()
+    {
+        return 987654321;
     }
 }

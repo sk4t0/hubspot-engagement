@@ -49,7 +49,7 @@ class ChannelFeatureTest extends TestCase
     private function testViewSetting()
     {
         $this->app->bind('view.finder', function ($app) {
-            $paths = [getcwd() . '/' . ('tests/resources/views')];
+            $paths = [getcwd().'/'.('tests/resources/views')];
 
             return new FileViewFinder($app['files'], $paths);
         });
@@ -181,9 +181,8 @@ class ChannelFeatureTest extends TestCase
 
         $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
         $this->assertEquals($channel_response['metadata']['to'], [[
-                'email' => 'email@email.com',
-            ]]);
-
+            'email' => 'email@email.com',
+        ]]);
     }
 
     /** @test */
@@ -206,6 +205,7 @@ class ChannelFeatureTest extends TestCase
         $this->assertEquals($channel_response['metadata']['cc'], [['email' => 'cc@email.com', 'firstName' => 'cc_name']]);
         $this->assertEquals($channel_response['metadata']['bcc'], [['email' => 'bcc@email.com', 'firstName' => 'bcc_name']]);
     }
+
     /** @test */
     public function it_can_send_a_notification_with_multiple_cc_bcc()
     {
@@ -231,7 +231,7 @@ class ChannelFeatureTest extends TestCase
         $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
         $this->assertIsArray($channel_response);
         $this->assertInstanceOf(\Illuminate\Support\HtmlString::class, $channel_response['metadata']['html']);
-        $htmlString = (string)$channel_response['metadata']['html'];
+        $htmlString = (string) $channel_response['metadata']['html'];
         $this->assertStringContainsString('Greeting', $htmlString);
         $this->assertStringContainsString('Line', $htmlString);
         $this->assertStringContainsString('button', $htmlString);
@@ -260,7 +260,7 @@ class ChannelFeatureTest extends TestCase
 
         $this->assertIsArray($channel_response);
         $this->assertInstanceOf(\Illuminate\Support\HtmlString::class, $channel_response['metadata']['html']);
-        $htmlString = (string)$channel_response['metadata']['html'];
+        $htmlString = (string) $channel_response['metadata']['html'];
         $this->assertStringContainsString('Markdown Title Content', $htmlString);
         $this->assertStringContainsString('Markdown body content', $htmlString);
     }

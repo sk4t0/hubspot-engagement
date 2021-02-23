@@ -16,11 +16,13 @@ class TestNotifiable
         return 'email@email.com';
     }
 
-    public function getHubspotOwnerId(){
-        return 123456789 ;
+    public function getHubspotOwnerId()
+    {
+        return 123456789;
     }
 
-    public function getHubspotContactId(){
-        return 987654321 ;
+    public function getHubspotContactId()
+    {
+        return 987654321;
     }
 }

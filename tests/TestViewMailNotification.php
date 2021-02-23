@@ -1,8 +1,6 @@
 <?php
 
-
 namespace NotificationChannels\HubspotEngagement\Test;
-
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -19,9 +17,9 @@ class TestViewMailNotification extends Notification
     {
         return (new MailMessage)
             ->subject('Subject')
-            ->from('from3@email.com','From3')
-            ->view('hubspot-engagement::email_test_view',[])
-            ->cc('cc@email.com','cc_name')
-            ->bcc('bcc@email.com','bcc_name');
+            ->from('from3@email.com', 'From3')
+            ->view('hubspot-engagement::email_test_view', [])
+            ->cc('cc@email.com', 'cc_name')
+            ->bcc('bcc@email.com', 'bcc_name');
     }
 }
