@@ -17,10 +17,13 @@ class TestNotifiable extends Model
         return 'email@email.com';
     }
 
-    public function getHubspotOwnerIdAttribute($value){
-        return 123456789 ;
+    public function getHubspotOwnerIdAttribute($value)
+    {
+        return 123456789;
     }
-    public function getHubspotContactIdAttribute($value){
-        return 987654321 ;
+
+    public function getHubspotContactIdAttribute($value)
+    {
+        return 987654321;
     }
 }
