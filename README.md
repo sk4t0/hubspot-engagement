@@ -117,7 +117,7 @@ class User extends Authenticatable{
     ...
      
     public function getHubspotOwnerId(){
-        return $this->owner->hubspot_owner_id ?: ($this->owner_id ? $this->owner->hubspot_owner_id : null);
+        return $this->hubspot_owner_id ?: ($this->owner_id ? $this->owner->hubspot_owner_id : null);
     }
 
     public function getHubspotContactId(){
