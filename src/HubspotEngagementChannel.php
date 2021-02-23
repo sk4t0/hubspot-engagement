@@ -58,42 +58,7 @@ class HubspotEngagementChannel
         ];
 
         $message = $notification->toMail($notifiable);
-        $metadataArray = [
-            'from' => [
-                'email' => $message->from ? $message->from[0] : config('mail.from.address'),
-            ],
-            'to' => [[
-                'email' => $notifiable->routeNotificationForMail($notification),
-            ]],
-            'cc' => [],
-            'bcc' => [],
-            'subject' => $message->subject,
-            'html' => $message->render(),
-        ];
-
-        $fromName = $message->from ? $message->from[1] : config('mail.from.name');
-        if ($fromName) {
-            $metadataArray['from']['firstName'] = $fromName;
-        }
-
-        if (! empty($message->cc)) {
-            foreach ($message->cc as $cc) {
-                $emailArray = ['email' => $cc[0]];
-                if (! empty($cc[1])) {
-                    $emailArray['firstName'] = $cc[1];
-                }
-                $metadataArray['cc'][] = $emailArray;
-            }
-        }
-        if (! empty($message->bcc)) {
-            foreach ($message->bcc as $bcc) {
-                $emailArray = ['email' => $bcc[0]];
-                if (! empty($bcc[1])) {
-                    $emailArray['firstName'] = $bcc[1];
-                }
-                $metadataArray['bcc'][] = $emailArray;
-            }
-        }
+        $metadataArray = $this->getMetadataFromMessage($message,$notifiable->routeNotificationForMail($notification));
 
         try {
             $e = $this->hubspot->engagements()->create($engagementArray, $associationsArray, $metadataArray);
@@ -102,5 +67,36 @@ class HubspotEngagementChannel
         }
 
         return $e;
+    }
+
+    private function parseEmailAddresses($emailAdresses){
+        return collect($emailAdresses)->map(function($address){
+            $emailArray = ['email' => $address[0]];
+            if (! empty($address[1])) {
+                $emailArray['firstName'] = $address[1];
+            }
+            return $emailArray;
+        })->toArray();
+    }
+
+    private function getMetadataFromMessage($message,$to){
+        $metadataArray = [
+            'from' => [
+                'email' => $message->from ? $message->from[0] : config('mail.from.address'),
+            ],
+            'to' => [[
+                'email' => $to,
+            ]],
+            'cc' => $this->parseEmailAddresses($message->cc),
+            'bcc' => $this->parseEmailAddresses($message->bcc),
+            'subject' => $message->subject,
+            'html' => $message->render(),
+        ];
+
+        $fromName = $message->from ? $message->from[1] : config('mail.from.name');
+        if ($fromName) {
+            $metadataArray['from']['firstName'] = $fromName;
+        }
+        return $metadataArray;
     }
 }

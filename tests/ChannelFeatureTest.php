@@ -186,11 +186,12 @@ class ChannelFeatureTest extends TestCase
     }
 
     /** @test */
-    public function it_can_send_a_notification_with_empty_cc_bcc()
+    public function it_can_send_a_notification_without_cc_bcc()
     {
         $this->mockHubspotRequest();
 
         $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
+
         $this->assertEquals($channel_response['metadata']['cc'], []);
         $this->assertEquals($channel_response['metadata']['bcc'], []);
     }

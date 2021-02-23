@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1614017061">
-  <project timestamp="1614017061">
+<coverage generated="1614076817">
+  <project timestamp="1614076817">
     <file name="/Volumes/Fusion/Repositories/hubspot-engagement/src/Exceptions/CouldNotSendNotification.php">
       <class name="NotificationChannels\HubspotEngagement\Exceptions\CouldNotSendNotification" namespace="global">
         <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
@@ -19,66 +19,73 @@
     </file>
     <file name="/Volumes/Fusion/Repositories/hubspot-engagement/src/HubspotEngagementChannel.php">
       <class name="NotificationChannels\HubspotEngagement\HubspotEngagementChannel" namespace="global">
-        <metrics complexity="12" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="30" elements="32" coveredelements="32"/>
+        <metrics complexity="11" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="33" coveredstatements="33" elements="37" coveredelements="37"/>
       </class>
-      <line num="23" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="5"/>
-      <line num="25" type="stmt" count="5"/>
-      <line num="26" type="stmt" count="5"/>
-      <line num="36" type="method" name="send" visibility="public" complexity="11" crap="11" count="4"/>
-      <line num="38" type="stmt" count="4"/>
-      <line num="41" type="stmt" count="4"/>
-      <line num="42" type="stmt" count="4"/>
-      <line num="45" type="stmt" count="4"/>
-      <line num="49" type="stmt" count="4"/>
-      <line num="50" type="stmt" count="4"/>
-      <line num="52" type="stmt" count="4"/>
-      <line num="53" type="stmt" count="2"/>
-      <line num="54" type="stmt" count="2"/>
-      <line num="55" type="stmt" count="2"/>
-      <line num="56" type="stmt" count="2"/>
-      <line num="58" type="stmt" count="2"/>
-      <line num="61" type="stmt" count="4"/>
-      <line num="62" type="stmt" count="2"/>
-      <line num="63" type="stmt" count="2"/>
-      <line num="64" type="stmt" count="2"/>
-      <line num="65" type="stmt" count="2"/>
-      <line num="67" type="stmt" count="2"/>
-      <line num="72" type="stmt" count="4"/>
-      <line num="74" type="stmt" count="4"/>
-      <line num="75" type="stmt" count="4"/>
-      <line num="76" type="stmt" count="4"/>
-      <line num="77" type="stmt" count="4"/>
-      <line num="80" type="stmt" count="4"/>
-      <line num="87" type="stmt" count="4"/>
-      <line num="89" type="stmt" count="1"/>
-      <line num="90" type="stmt" count="1"/>
-      <line num="92" type="stmt" count="3"/>
-      <metrics loc="94" ncloc="79" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="30" elements="32" coveredelements="32"/>
+      <line num="23" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="15"/>
+      <line num="25" type="stmt" count="15"/>
+      <line num="26" type="stmt" count="15"/>
+      <line num="36" type="method" name="send" visibility="public" complexity="4" crap="4" count="14"/>
+      <line num="38" type="stmt" count="14"/>
+      <line num="39" type="stmt" count="14"/>
+      <line num="40" type="stmt" count="1"/>
+      <line num="44" type="stmt" count="13"/>
+      <line num="45" type="stmt" count="13"/>
+      <line num="46" type="stmt" count="13"/>
+      <line num="48" type="stmt" count="13"/>
+      <line num="49" type="stmt" count="12"/>
+      <line num="53" type="stmt" count="13"/>
+      <line num="60" type="stmt" count="13"/>
+      <line num="61" type="stmt" count="13"/>
+      <line num="64" type="stmt" count="13"/>
+      <line num="65" type="stmt" count="1"/>
+      <line num="66" type="stmt" count="1"/>
+      <line num="69" type="stmt" count="12"/>
+      <line num="72" type="method" name="parseEmailAddresses" visibility="private" complexity="2" crap="2" count="13"/>
+      <line num="73" type="stmt" count="13"/>
+      <line num="74" type="stmt" count="6"/>
+      <line num="75" type="stmt" count="6"/>
+      <line num="76" type="stmt" count="6"/>
+      <line num="78" type="stmt" count="6"/>
+      <line num="79" type="stmt" count="13"/>
+      <line num="82" type="method" name="getMetadataFromMessage" visibility="private" complexity="4" crap="4" count="13"/>
+      <line num="85" type="stmt" count="13"/>
+      <line num="88" type="stmt" count="13"/>
+      <line num="90" type="stmt" count="13"/>
+      <line num="91" type="stmt" count="13"/>
+      <line num="92" type="stmt" count="13"/>
+      <line num="93" type="stmt" count="13"/>
+      <line num="96" type="stmt" count="13"/>
+      <line num="97" type="stmt" count="13"/>
+      <line num="98" type="stmt" count="10"/>
+      <line num="100" type="stmt" count="13"/>
+      <metrics loc="102" ncloc="87" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="33" coveredstatements="33" elements="37" coveredelements="37"/>
     </file>
     <file name="/Volumes/Fusion/Repositories/hubspot-engagement/src/HubspotEngagementMessage.php">
       <class name="NotificationChannels\HubspotEngagement\HubspotEngagementMessage" namespace="global">
         <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
       </class>
-      <metrics loc="10" ncloc="9" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      <metrics loc="8" ncloc="7" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/Volumes/Fusion/Repositories/hubspot-engagement/src/HubspotEngagementServiceProvider.php">
       <class name="NotificationChannels\HubspotEngagement\HubspotEngagementServiceProvider" namespace="global">
-        <metrics complexity="3" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="9" elements="12" coveredelements="10"/>
+        <metrics complexity="4" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="11" elements="14" coveredelements="12"/>
       </class>
-      <line num="15" type="method" name="boot" visibility="public" complexity="2" crap="2.01" count="5"/>
-      <line num="17" type="stmt" count="5"/>
-      <line num="18" type="stmt" count="5"/>
-      <line num="19" type="stmt" count="5"/>
-      <line num="20" type="stmt" count="1"/>
-      <line num="22" type="stmt" count="1"/>
+      <line num="14" type="method" name="boot" visibility="public" complexity="3" crap="3.01" count="15"/>
+      <line num="16" type="stmt" count="15"/>
+      <line num="17" type="stmt" count="15"/>
+      <line num="20" type="stmt" count="15"/>
+      <line num="21" type="stmt" count="15"/>
+      <line num="22" type="stmt" count="15"/>
       <line num="23" type="stmt" count="1"/>
-      <line num="26" type="stmt" count="0"/>
-      <line num="27" type="stmt" count="5"/>
-      <line num="29" type="stmt" count="5"/>
-      <line num="34" type="method" name="register" visibility="public" complexity="1" crap="1" count="5"/>
-      <line num="36" type="stmt" count="5"/>
-      <metrics loc="37" ncloc="31" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="9" elements="12" coveredelements="10"/>
+      <line num="25" type="stmt" count="1"/>
+      <line num="26" type="stmt" count="1"/>
+      <line num="29" type="stmt" count="0"/>
+      <line num="30" type="stmt" count="15"/>
+      <line num="31" type="stmt" count="15"/>
+      <line num="36" type="method" name="register" visibility="public" complexity="1" crap="1" count="15"/>
+      <line num="38" type="stmt" count="15"/>
+      <metrics loc="39" ncloc="33" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="11" elements="14" coveredelements="12"/>
     </file>
-    <metrics files="5" loc="163" ncloc="141" classes="4" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="42" coveredstatements="41" elements="48" coveredelements="46"/>
+    <metrics files="5" loc="171" ncloc="149" classes="4" methods="8" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="47" coveredstatements="46" elements="55" coveredelements="53"/>
   </project>
 </coverage>
