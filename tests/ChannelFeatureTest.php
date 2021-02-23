@@ -3,7 +3,6 @@
 namespace NotificationChannels\HubspotEngagement\Test;
 
 use Illuminate\Support\Facades\Config;
-use Illuminate\View\FileViewFinder;
 use Mockery;
 use NotificationChannels\HubspotEngagement\Exceptions\CouldNotSendNotification;
 use NotificationChannels\HubspotEngagement\Exceptions\InvalidConfiguration;
