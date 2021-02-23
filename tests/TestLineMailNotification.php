@@ -1,6 +1,5 @@
 <?php
 
-
 namespace NotificationChannels\HubspotEngagement\Test;
 
 use Illuminate\Notifications\Messages\MailMessage;
@@ -20,6 +19,6 @@ class TestLineMailNotification extends Notification
             ->subject('Subject')
             ->greeting('Greeting')
             ->line('Line')
-            ->action('button','https://www.google.it');
+            ->action('button', 'https://www.google.it');
     }
 }
