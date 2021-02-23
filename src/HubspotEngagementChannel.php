@@ -93,7 +93,7 @@ class HubspotEngagementChannel
             'cc' => $this->parseEmailAddresses($message->cc),
             'bcc' => $this->parseEmailAddresses($message->bcc),
             'subject' => $message->subject,
-            'html' => $message->render(),
+            'html' => (string) $message->render(),
         ];
 
         $fromName = $message->from ? $message->from[1] : config('mail.from.name');
