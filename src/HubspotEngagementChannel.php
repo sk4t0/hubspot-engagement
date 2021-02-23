@@ -61,7 +61,7 @@ class HubspotEngagementChannel
         $metadataArray = $this->getMetadataFromMessage($message, $notifiable->routeNotificationForMail($notification));
 
         try {
-            $e = $this->hubspot->engagements()->create($engagementArray, $associationsArray, $metadataArray);
+            $e = (array) $this->hubspot->engagements()->create($engagementArray, $associationsArray, $metadataArray);
         } catch (BadRequest $e) {
             throw CouldNotSendNotification::serviceRespondedWithAnError($e->getMessage());
         }

@@ -46,15 +46,6 @@ class ChannelFeatureTest extends TestCase
         $this->app['config']->set('mail.from.name', 'from_name');
     }
 
-    private function testViewSetting()
-    {
-        $this->app->bind('view.finder', function ($app) {
-            $paths = [getcwd().'/'.('tests/resources/views')];
-
-            return new FileViewFinder($app['files'], $paths);
-        });
-    }
-
     private function mockHubspot($client)
     {
         $this->hubspot->shouldReceive('engagements')->andReturn(new Engagements($client));
