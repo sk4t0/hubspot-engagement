@@ -37,18 +37,29 @@ composer require laravel-notification-channels/hubspot-engagement
 
 Generate API Key from [Hubspot](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key).
 
-Then, configure your Hubspot API Key and/or Guzzle options:
+Configure your Hubspot API on .env
+```dotenv
+HUBSPOT_API_KEY=XXXXXXXX
+```
+
+To publish the config file to config/newsletter.php run:
+```bash
+php artisan vendor:publish --provider="NotificationChannels\HubspotEngagement\HubspotEngagementServiceProvider"
+```
+This will publish a file hubspot.php in your config directory with the following contents:
 
 ```php
 // config/services.php
-...
-'hubspot' => [
+
+return [
     'api_key' => env('HUBSPOT_API_KEY'),
-    'client_options' => [
-        'http_errors' => true,
+    /*
+     * Guzzle options
+     */
+    'CLIENT_OPTIONS' => [
+        'HTTP_ERRORS' => true,
     ]
-],
-...
+];
 ```
 
 By setting http_errors to false, you will not receive any exceptions at all, but pure responses. For possible options,

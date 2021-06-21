@@ -14,8 +14,6 @@ class HubspotEngagementChannel
      */
     protected $hubspot;
 
-    protected $mail_config;
-
     /**
      * HubspotEngagementChannel constructor.
      * @param Hubspot $hubspot

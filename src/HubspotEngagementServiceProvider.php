@@ -14,20 +14,17 @@ class HubspotEngagementServiceProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningUnitTests()) {
-            $this->loadViewsFrom(__DIR__.'/../resources/views', 'hubspot-engagement');
+            $this->loadViewsFrom(__DIR__ . '/../resources/views', 'hubspot-engagement');
         }
 
-        $this->app->when(HubspotEngagementChannel::class)
-            ->needs(Hubspot::class)
-            ->give(static function () {
-                $hubspotConfig = config('services.hubspot');
+        $this->mergeConfigFrom(__DIR__ . '/../config/hubspot.php', 'hubspot');
 
-                if (is_null($hubspotConfig)) {
-                    throw InvalidConfiguration::configurationNotSet();
-                }
+        $this->publishes(
+            [
+                __DIR__ . '/../config/hubspot.php' => config_path('hubspot.php'),
+            ]
+        );
 
-                return Hubspot::create($hubspotConfig['api_key'], null, $hubspotConfig['client_options'] ?? []);
-            });
     }
 
     /**
@@ -35,5 +32,18 @@ class HubspotEngagementServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->when(HubspotEngagementChannel::class)
+            ->needs(Hubspot::class)
+            ->give(
+                static function () {
+                    $hubspotConfig = config('hubspot');
+
+                    if (is_null($hubspotConfig)) {
+                        throw InvalidConfiguration::configurationNotSet();
+                    }
+
+                    return Hubspot::create($hubspotConfig['api_key'], null, $hubspotConfig['client_options'] ?? []);
+                }
+            );
     }
 }

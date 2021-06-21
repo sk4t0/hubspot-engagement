@@ -70,7 +70,7 @@ class ChannelFeatureTest extends TestCase
     /** @test */
     public function it_throws_an_exception_when_it_is_not_configured()
     {
-        Config::set('services.hubspot', null);
+        Config::set('hubspot', null);
         $this->expectException(InvalidConfiguration::class);
 
         (new TestNotifiable())->notify(new TestLineMailNotification());
