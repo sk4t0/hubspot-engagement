@@ -102,7 +102,6 @@ class ChannelFeatureTest extends TestCase
         $channel_response = $this->channel->send(new TestNotifiable(), new TestLineMailNotification());
         $this->assertEquals($channel_response['engagement'], [
             'active' => true,
-            'ownerId' => 123456789,
             'type' => 'EMAIL',
             'timestamp' => $channel_response['engagement']['timestamp'],
         ]);
@@ -112,20 +111,6 @@ class ChannelFeatureTest extends TestCase
             'dealIds' => [],
             'ownerIds' => [],
             'ticketIds' => [],
-        ]);
-    }
-
-    /** @test */
-    public function it_can_send_a_notification_to_notifiable_without_owner_id()
-    {
-        $this->mockHubspotRequest();
-
-        $channel_response = $this->channel->send(new TestNotifiableWithoutOwnerId(), new TestLineMailNotification());
-        $this->assertIsArray($channel_response);
-        $this->assertEquals($channel_response['engagement'], [
-            'active' => true,
-            'type' => 'EMAIL',
-            'timestamp' => $channel_response['engagement']['timestamp'],
         ]);
     }
 

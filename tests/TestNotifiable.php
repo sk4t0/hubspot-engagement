@@ -2,11 +2,12 @@
 
 namespace NotificationChannels\HubspotEngagement\Test;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 
 class TestNotifiable
 {
-    use \Illuminate\Notifications\Notifiable;
+    use Notifiable;
 
     /**
      * @return int
@@ -14,11 +15,6 @@ class TestNotifiable
     public function routeNotificationForMail(Notification $notification)
     {
         return 'email@email.com';
-    }
-
-    public function getHubspotOwnerId()
-    {
-        return 123456789;
     }
 
     public function getHubspotContactId()

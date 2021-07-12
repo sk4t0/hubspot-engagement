@@ -43,9 +43,6 @@ class HubspotEngagementChannel
             'type' => 'EMAIL',
             'timestamp' => now()->getPreciseTimestamp(3),
         ];
-        if ($notifiable->getHubspotOwnerId()) {
-            $engagementArray['ownerId'] = $notifiable->getHubspotOwnerId();
-        }
 
         $associationsArray = [
             'contactIds' => [$hubspotContactId],
