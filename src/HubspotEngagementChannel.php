@@ -2,10 +2,11 @@
 
 namespace NotificationChannels\HubspotEngagement;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Notifications\Notification;
-use NotificationChannels\HubspotEngagement\Exceptions\CouldNotSendNotification;
-use SevenShores\Hubspot\Exceptions\BadRequest;
 use SevenShores\Hubspot\Factory as Hubspot;
+use SevenShores\Hubspot\Exceptions\BadRequest;
+use NotificationChannels\HubspotEngagement\Exceptions\CouldNotSendNotification;
 
 class HubspotEngagementChannel
 {
@@ -38,64 +39,29 @@ class HubspotEngagementChannel
             return null;
         }
 
-        $engagementArray = [
-            'active' => true,
-            'type' => 'EMAIL',
-            'timestamp' => now()->getPreciseTimestamp(3),
-        ];
-
-        $associationsArray = [
-            'contactIds' => [$hubspotContactId],
-            'companyIds' => [],
-            'dealIds' => [],
-            'ownerIds' => [],
-            'ticketIds' => [],
-        ];
-
         $message = $notification->toMail($notifiable);
-        $metadataArray = $this->getMetadataFromMessage($message, $notifiable->routeNotificationForMail($notification));
 
-        try {
-            $e = (array) $this->hubspot->engagements()->create($engagementArray, $associationsArray, $metadataArray);
-        } catch (BadRequest $e) {
-            throw CouldNotSendNotification::serviceRespondedWithAnError($e->getMessage());
-        }
-
-        return $e;
-    }
-
-    private function parseEmailAddresses($emailAdresses)
-    {
-        return collect($emailAdresses)->map(function ($address) {
-            $emailArray = ['email' => $address[0]];
-            if (! empty($address[1])) {
-                $emailArray['firstName'] = $address[1];
+        $response = Http::post('https://api.hubapi.com/crm/v3/objects/emails?hapikey=' . config('hubspot.api_key'), [
+            "properties" => [
+                "hs_timestamp" => now()->getPreciseTimestamp(3),
+                "hubspot_owner_id" => "38776675",
+                "hs_email_direction" => "EMAIL",
+                "hs_email_status" => "SENT",
+                "hs_email_subject" => $message->subject,
+                "hs_email_text" => (string) $message->render()]
+            ]
+        );
+        $hubspotEmail = json_decode($response->body(), true);
+        if($response->ok()) {
+            $newResp = Http::put('https://api.hubapi.com/crm/v3/objects/emails/'.$hubspotEmail['id'].'/associations/contacts/'.$hubspotContactId.'/198?hapikey=' . config('hubspot.api_key'));
+            if(!$newResp->ok()) {
+                throw CouldNotSendNotification::serviceRespondedWithAnError($newResp['message']);
             }
-
-            return $emailArray;
-        })->toArray();
-    }
-
-    private function getMetadataFromMessage($message, $to)
-    {
-        $metadataArray = [
-            'from' => [
-                'email' => $message->from ? $message->from[0] : config('mail.from.address'),
-            ],
-            'to' => [[
-                'email' => $to,
-            ]],
-            'cc' => $this->parseEmailAddresses($message->cc),
-            'bcc' => $this->parseEmailAddresses($message->bcc),
-            'subject' => $message->subject,
-            'html' => (string) $message->render(),
-        ];
-
-        $fromName = $message->from ? $message->from[1] : config('mail.from.name');
-        if ($fromName) {
-            $metadataArray['from']['firstName'] = $fromName;
+        }else{
+            throw CouldNotSendNotification::serviceRespondedWithAnError($response['message']);
         }
 
-        return $metadataArray;
+        return $response;
     }
+
 }
