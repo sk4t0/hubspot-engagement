@@ -9,7 +9,7 @@ use NotificationChannels\HubspotEngagement\Exceptions\InvalidConfiguration;
 use NotificationChannels\HubspotEngagement\HubspotEngagementChannel;
 use Orchestra\Testbench\TestCase;
 use SevenShores\Hubspot\Exceptions\BadRequest;
-use SevenShores\Hubspot\Factory as Hubspot;
+use Tecnobit\LaravelHubSpot\Facades\HubSpot;
 use SevenShores\Hubspot\Http\Client;
 use SevenShores\Hubspot\Resources\Engagements;
 

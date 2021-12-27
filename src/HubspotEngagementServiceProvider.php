@@ -3,8 +3,6 @@
 namespace NotificationChannels\HubspotEngagement;
 
 use Illuminate\Support\ServiceProvider;
-use NotificationChannels\HubspotEngagement\Exceptions\InvalidConfiguration;
-use SevenShores\Hubspot\Factory as Hubspot;
 
 class HubspotEngagementServiceProvider extends ServiceProvider
 {
@@ -32,18 +30,6 @@ class HubspotEngagementServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->when(HubspotEngagementChannel::class)
-            ->needs(Hubspot::class)
-            ->give(
-                static function () {
-                    $hubspotConfig = config('hubspot');
-
-                    if (is_null($hubspotConfig)) {
-                        throw InvalidConfiguration::configurationNotSet();
-                    }
-
-                    return Hubspot::create($hubspotConfig['api_key'], null, $hubspotConfig['client_options'] ?? []);
-                }
-            );
+        
     }
 }

@@ -4,23 +4,16 @@ namespace NotificationChannels\HubspotEngagement;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Notifications\Notification;
-use Tecnobit\LaravelHubSpot\Facades\HubSpot;
 use NotificationChannels\HubspotEngagement\Exceptions\CouldNotSendNotification;
 
 class HubspotEngagementChannel
 {
     /**
-     * @var Hubspot
-     */
-    protected $hubspot;
-
-    /**
      * HubspotEngagementChannel constructor.
-     * @param Hubspot $hubspot
      */
-    public function __construct(Hubspot $hubspot)
+    public function __construct()
     {
-        $this->hubspot = $hubspot;
+    
     }
 
     /**
