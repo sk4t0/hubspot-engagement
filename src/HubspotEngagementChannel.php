@@ -58,7 +58,7 @@ class HubspotEngagementChannel
                 throw CouldNotSendNotification::serviceRespondedWithAnError($newResp['message']);
             }
         }else{
-            throw CouldNotSendNotification::serviceRespondedWithAnError($response['message']);
+            throw CouldNotSendNotification::serviceRespondedWithAnError($newResp['message']);
         }
 
         return $response;
