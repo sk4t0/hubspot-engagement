@@ -4,8 +4,7 @@ namespace NotificationChannels\HubspotEngagement;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Notifications\Notification;
-use SevenShores\Hubspot\Factory as Hubspot;
-use SevenShores\Hubspot\Exceptions\BadRequest;
+use Tecnobit\LaravelHubSpot\Facades\HubSpot;
 use NotificationChannels\HubspotEngagement\Exceptions\CouldNotSendNotification;
 
 class HubspotEngagementChannel
