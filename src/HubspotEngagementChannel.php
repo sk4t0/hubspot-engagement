@@ -44,9 +44,9 @@ class HubspotEngagementChannel
             ]
         );
         $hubspotEmail = json_decode($response->body(), true);
-        if($response->ok()) {
+        if($response->status() == 201) {
             $newResp = Http::put('https://api.hubapi.com/crm/v3/objects/emails/'.$hubspotEmail['id'].'/associations/contacts/'.$hubspotContactId.'/198?hapikey=' . config('hubspot.api_key'));
-            if(!$newResp->ok()) {
+            if(!$newResp->status() == 200) {
                 throw CouldNotSendNotification::serviceRespondedWithAnError($newResp['message']);
             }
         }else{
