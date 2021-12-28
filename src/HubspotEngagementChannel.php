@@ -53,7 +53,7 @@ class HubspotEngagementChannel
             throw CouldNotSendNotification::serviceRespondedWithAnError($response['message']);
         }
 
-        return $response;
+        return $hubspotEmail;
     }
 
 }
